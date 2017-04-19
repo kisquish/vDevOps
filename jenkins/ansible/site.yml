@@ -1,0 +1,7 @@
+- hosts: docker_host
+  roles:
+    - docker_install
+
+- hosts: docker_host
+  roles:
+    - containerized_jenkins

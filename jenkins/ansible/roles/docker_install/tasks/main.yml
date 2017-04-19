@@ -1,0 +1,57 @@
+---
+
+- name: Remove unofficial Docker packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker 
+    - docker-common 
+    - container-selinux
+    - docker-selinux
+    - docker-engine
+
+- name: install yum utils
+  yum:
+    name: yum-utils
+    state: present
+
+- name: set up the stable repository
+#  yum_repository:
+#    name: dockerrepo
+#    description: Docker repos for yum
+#    file: /etc/yum.repos.d/docker
+#    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+#    enabled: yes
+#    gpgcheck: yes
+#    gpgkey: https://yum.dockerproject.org/gpg
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: update the yum package index
+  command: yum makecache fast
+
+- name: install docker ce
+  yum:
+    name: docker-ce
+    state: present
+
+- name: create docker user group
+  group:
+    name: "{{ docker_user_group }}"
+    state: present
+
+- name: add docker_user_name to docker_user_group
+#  user:
+#    name: {{ docker_user_name }}
+#    group: {{ docker_user_group }}
+  command: usermod -aG docker {{ docker_user_name }}
+
+- name: start docker
+  service:
+    name: docker
+    state: started
+
+- name: configure docker to start on boot
+  service:
+    name: docker
+    enabled: yes

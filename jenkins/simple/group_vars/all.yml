@@ -1,0 +1,15 @@
+docker_user_group: docker
+docker_user_name: root
+
+internal_mapping_port_1: 8080
+external_mapping_port_1: 8080
+
+internal_mapping_port_2: 50000
+external_mapping_port_2: 50000
+
+jenkins_container_name: myJenkins
+mapped_directory: jenkinsData
+
+
+uname-s: Linux
+uname-m: x86_64

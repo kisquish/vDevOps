@@ -1,0 +1,14 @@
+---
+
+- name: ensure curl and common pckgs are installed
+  yum:
+    name: {{item}}
+    state: present
+  with_items:
+    - curl
+    - net-tools
+
+
+- name: dowload docker compose repo from github
+  command: curl -L "https://github.com/docker/compose/releases/download/1.11.1/docker-compose-{{ uname-s }}-{{ uname-m }}" -o /usr/local/bin/docker-compose
+
