@@ -1,0 +1,76 @@
+- name: Remove unofficial or older Docker packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker 
+    - docker-engine
+  register: unofficialState
+
+- name: delete old docker directory if exists
+  file:
+    path: /var/lib/docker
+    state: absent
+  when: unofficialState.changed
+
+- name: SET UP THE REPOSITORY --> Install packages to allow apt to use a repository over HTTPS
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+- name: Add Docker’s official GPG key
+#  apt_key:
+#    name: dockerrepo
+#    description: Docker repos for yum
+#    file: /etc/yum.repos.d/docker
+#    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+#    enabled: yes
+#    gpgcheck: yes
+#    gpgkey: https://yum.dockerproject.org/gpg
+#  command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  script: "{{ pathToScripts }}addDockerGPGkey.sh"
+
+- name: verify the key fingerprint
+  command: apt-key fingerprint {{ figerprintKey }}
+  register: figerprintKey
+
+- name: print the valye of figerprint key
+  debug:
+    var: figerprintKey.stdout_lines
+
+- name: SET UP the stable repository CE-stable
+  command: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ lsbRelease }} stable"
+
+- name: Update the apt package index
+  command: apt-get update
+
+- name: install docker ce
+  apt:
+    name: docker-ce
+    state: present
+
+- name: create docker user group
+  group:
+    name: "{{ dockerUserGroup }}"
+    state: present
+
+- name: add docker_user_name to docker_user_group
+#  user:
+#    name: {{ docker_user_name }}
+#    group: {{ docker_user_group }}
+  command: usermod -aG docker {{ dockerUserName }}
+
+- name: start docker
+  service:
+    name: docker
+    state: started
+
+- name: configure docker to start on boot
+  service:
+    name: docker
+    enabled: yes

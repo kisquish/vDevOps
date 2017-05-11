@@ -1,0 +1,9 @@
+---
+- name: create directory to map jenkins_home on the guest host if it does not exist
+  file:
+    path: "{{ pathToUserHome }}{{ dockerUserName }}/jenkins"
+    state: directory
+    mode: 0755
+
+- name: creating containerized jenkins server
+  command: docker run --name {{ jenkinsContainerName }} -dit -p {{ externalMappingPort1 }}:{{ internalMappingPort1 }} -p {{ externalMappingPort2 }}:{{ internalMappingPort2 }} -v {{ mappedDirectory }}:/var/jenkins_home jenkins

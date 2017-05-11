@@ -1,15 +1,21 @@
-docker_user_group: docker
-docker_user_name: root
+dockerUserGroup: docker
+dockerUserName: ubuntu
 
-internal_mapping_port_1: 8080
-external_mapping_port_1: 8080
+internalMappingPort1: 8080
+externalMappingPort1: 8080
 
-internal_mapping_port_2: 50000
-external_mapping_port_2: 50000
+internalMappingPort2: 50000
+externalMappingPort2: 50000
 
-jenkins_container_name: myJenkins
-mapped_directory: jenkinsData
+jenkinsContainerName: myJenkins
+mappedDirectory: jenkinsData
 
 
 uname-s: Linux
 uname-m: x86_64
+lsbRelease: xenial
+pathToUserHome: /home/
+pathToPlaybook: /home/ec2-user/workbench/vDevOps/
+playbooName: jenkins
+pathToScripts: "{{pathToPlaybook}}{{playbooName}}/scripts/"
+figerprintKey: 0EBFCD88
