@@ -1,7 +1,11 @@
-- hosts: docker_host
-  roles:
-    - dockerInstallOnUbuntu
+- hosts: cent-nodes
+  roles:    
+    - dockerInstallOnCentOS
 
-- hosts: docker_host
+# - hosts: ubun-nodes
+#   roles:
+#     - dockerInstallOnUbuntu
+
+- hosts: cent-nodes
   roles:
     - containerizedJenkins

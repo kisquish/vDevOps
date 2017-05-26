@@ -1,3 +1,25 @@
+## vars on ansible host
+ansibleHostUser: ec2-user
+playbookName: jenkins
+# the following path includes the playbook name
+pathToPlaybbok: "/home/{{ansibleHostUser}}/workbench/vDevOps/{{playbookName}}/"
+pathToScripts: "{{pathToPlaybbok}}scripts/"
+pathToKey: /home/ec2-user/.ssh/a-scap.pem
+##
+
+## vars on remote hosts
+# common
+dockerUserGroup: docker
+# on CentOS
+centRemoteUser: centos
+# on Ubuntu
+ubunRemoteUser: ubuntu
+##
+
+uname-s: Linux
+uname-m: x86_64
+lsbRelease: xenial
+figerprintKey: 0EBFCD88
 dockerUserGroup: docker
 dockerUserName: ubuntu
 
@@ -10,12 +32,5 @@ externalMappingPort2: 50000
 jenkinsContainerName: myJenkins
 mappedDirectory: jenkinsData
 
-
-uname-s: Linux
-uname-m: x86_64
-lsbRelease: xenial
 pathToUserHome: /home/
-pathToPlaybook: /home/ec2-user/workbench/vDevOps/
-playbooName: jenkins
-pathToScripts: "{{pathToPlaybook}}{{playbooName}}/scripts/"
 figerprintKey: 0EBFCD88
