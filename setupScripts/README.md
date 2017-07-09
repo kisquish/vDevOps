@@ -51,3 +51,7 @@ attached to virtual bridge virbr1
 TRAFFIC REDIRECTION
 This section describes how to redirect inbound traffic from a main server to its hosted virtual machines.
 next
+
+########
+Link for configuring vBridge: https://jamielinux.com/docs/libvirt-networking-handbook/nat-based-network.html
+
