@@ -1,0 +1,49 @@
+#  this compose file will be used to deploy stack of cicd pipeline
+# this version of compose can be used with docker 17.06.0+
+version "3.3"
+
+# Local location       Container location      Usage
+# /srv/gitlab/data     /var/opt/gitlab         For storing application data
+# /srv/gitlab/logs     /var/log/gitlab         For storing logs
+# /srv/gitlab/config   /etc/gitlab             For storing the GitLab configuration files
+
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'ns3061723.ip-193-70-44.eu:80'
+    environment:
+      external_url: 'ns3061723.ip-193-70-44.eu'
+    ports:
+      - '9081:80'
+      - '444:443'
+      - '2222:22'
+
+volumes:
+  - '/srv/gitlab/config:/etc/gitlab'
+  - '/srv/gitlab/logs:/var/gitlab'
+  - '/srv/gitlab/data:/var/gitlab'
+
+
+    docker run --detach \
+    --hostname ns3061723.ip-193-70-44.eu:80 \
+    --publish 9081:80 --publish 2222:22  --publish 444:443\
+    --name devops-scm \
+    --restart always \
+    --volume /srv/gitlab/config:/etc/gitlab \
+    --volume /srv/gitlab/logs:/var/log/gitlab \
+    --volume /srv/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce:latest
+
+
+
+#docker service create --name gitlab \
+#-p 80443:443 -p 8081:80 --publish 8022:22 \
+#--network my-network \
+#--replicas 1 \
+#--hostname 10.69.8.10 \
+#--mount type=bind,src=/var/gitlab/config,dst=/etc/gitlab \
+#--mount type=bind,src=/var/gitlab/logs,dst=/var/log/gitlab \
+#--mount type=bind,src=/var/gitlab/data,dst=/var/opt/gitlab \
+#--constraint "node.labels.gitlab==true" \
+#gitlab/gitlab-ce:latest
