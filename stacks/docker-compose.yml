@@ -1,6 +1,6 @@
 #  this compose file will be used to deploy stack of cicd pipeline
 #  this version of compose can be used with docker 17.06.0+
-version "3.3"
+version: '3.3'
 
 services:
 
@@ -19,6 +19,9 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraint:
+          - node.role =
     restart: unless-stopped
     hostname: 'ns3061723.ip-193-70-44.eu:80'
     environment:
@@ -29,8 +32,8 @@ services:
       - '2222:22'
     volumes:
       - '/srv/gitlab/config:/etc/gitlab'
-      - '/srv/gitlab/logs:/var/gitlab'
-      - '/srv/gitlab/data:/var/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
 
 # service 2 -- ci-cd (jenkins) called here devops-cd-cd
 
