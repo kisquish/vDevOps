@@ -1,2 +1,37 @@
 ---
 # tasks file for roles/kube-minion
+
+# - name: installing docker
+#   yum:
+#     name: docker
+#     state: present
+
+- name: configure /etc/kubernetes/kubelet 
+  template:
+    src: etc-kubernetes-kubelet.j2
+    dest: /etc/kubernetes/kubelet
+
+- name: Configure flannel to overlay Docker network in /etc/sysconfig/flanneld
+  template:
+    src: etc-sysconfig-flanneld.j2
+    dest:  /etc/sysconfig/flanneld
+
+- name: start kube-proxy kubelet flanneld docker
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - kube-proxy
+    - kubelet
+    - docker
+    - flanneld
+
+- name: configure kubectl
+  command: kubectl config set-cluster default-cluster --server=http://{{ k_master_name }}:8080
+
+- name: configure kubectl
+  command: kubectl config set-context default-context --cluster=default-cluster --user=default-admin
+
+- name: configure kubectl
+  command: kubectl config use-context default-context 

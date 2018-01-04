@@ -3,6 +3,7 @@
 
 - name: create virt7-docker-common-release repos
   yum_repository:
+    description: Docker Yum Repos
     name: virt7-docker-common-release
     file: virt7-docker-common-release
     baseurl: http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
@@ -16,4 +17,32 @@
   yum:
     name: "{{ item }}"
     state: present
-    
+  with_items:
+    - kubernetes
+    - etcd
+    - flannel
+
+- name: configure masters and minions to resolve names
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      kube-master {{ k_master_ip }}
+      kube-minion-1 {{ k_minion1_ip }}
+
+- name: configure /etc/kubernetes/config 
+  template:
+    src: etc-kubernetes-config.j2
+    dest: /etc/kubernetes/config
+
+
+- name: set SELinux to permissive mode
+  selinux: 
+    policy: targeted
+    state: permissive
+
+- name: disable and stop firewalld service
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+

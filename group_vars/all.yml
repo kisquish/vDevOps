@@ -1,0 +1,5 @@
+k_master_name: kube-master
+k_master_ip: 192.168.144.132
+k_minion1_name: kube-minion-1
+k_minion1_ip: 192.168.144.133
+

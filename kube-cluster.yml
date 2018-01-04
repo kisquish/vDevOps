@@ -1,0 +1,14 @@
+- hosts: kube-cluster
+  user: root
+  roles:
+    - kube-master-minion
+
+- hosts: kube-masters
+  user: root
+  roles:
+    - kube-master
+
+- hosts: kube-minions
+  user: root
+  roles:
+    - kube-minion
