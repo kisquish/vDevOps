@@ -1,0 +1,8 @@
+# common vars for all remote osts
+
+# vars on ansible host
+ansibleHostUser: ptcadm
+
+## vars on remote hosts
+# common
+dockerUserGroup: docker

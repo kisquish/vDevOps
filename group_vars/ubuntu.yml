@@ -1,0 +1,7 @@
+#[ubuntu:vars]
+ubunRemoteUser: ptcadm
+ansible_user: "{{ubunRemoteUser}}"
+ansible_ssh_user: "{{ubunRemoteUser}}"
+become_method: sudo
+ansible_become: True
+ansible_python_interpreter: /usr/bin/python3

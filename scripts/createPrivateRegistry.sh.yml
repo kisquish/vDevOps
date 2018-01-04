@@ -1,0 +1,72 @@
+#!/bin/bash
+registry_hostname=$1
+registry_published_port=$2
+registry_name=$3
+# create parrent directory to store certificate
+mkdir -p $(pwd)/certs 
+
+# generate self-signed certificate
+# openssl req -newkey rsa:4096 -nodes -sha256 -keyout /home/$USER/certs/ptc-cen-ops-dcokm03.key -x509 -days 365 -out /home/$USER/certs/ptc-cen-ops-dcokm03.crt
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout /home/$USER/certs/$registry_hostname.key -x509 -days 365 -out /home/$USER/certs/$registry_hostname.crt
+
+# configure docker to use certificate
+mkdir /etc/docker/certs.d
+mkdir /etc/docker/certs.d/$registry_hostname:$registry_published_port
+cp $(pwd)/certs/$registry_hostname.crt /etc/docker/certs.d/$registry_hostname:$registry_published_port/ca.crt
+
+# restart docker service
+sudo systemctl restart docker.service
+
+mkdir $(pwd)/registry-data
+
+docker run -d -p $registry_published_port:5000 --name $registry_name \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry -v $(pwd)/certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/home/$USER/certs/$registry_hostname.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/home/$USER/certs/$registry_hostname.key \
+  registry
+################################# Running a Secured Registry Container in Linux #################################################################
+
+mkdir -p $(pwd)/certs
+
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout $(pwd)/certs/ptc-docker-registry.key -x509 -days 365 -out $(pwd)/certs/ptc-docker-registry.crt
+
+mkdir /etc/docker/certs.d
+mkdir /etc/docker/certs.d/ptc-docker-registry:5000 
+cp $(pwd)/certs/ptc-docker-registry.crt /etc/docker/certs.d/ptc-docker-registry:5000/ca.crt
+
+mkdir registry-data
+docker run -d -p 5000:5000 --name ptc-registry \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry -v $(pwd)/certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ptc-docker-registry.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/ptc-docker-registry.key \
+  registry
+################################# Part 3 - Using Basic Authentication with a Secured Registry in Linux #############################################
+
+
+mkdir -p $(pwd)/auth 
+
+# Create the password file with an entry for user user_name with password user_password;
+
+docker run --entrypoint htpasswd registry:latest -Bbn user_name user_password > auth/htpasswd
+
+Running an Authenticated Secure Registry
+
+docker kill registry
+docker rm registry
+
+docker run -d -p 5000:5000 --name ptc-registry \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry \
+  -v $(pwd)/certs:/certs \
+  -v $(pwd)/auth:/auth \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ptc-docker-registry.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/ptc-docker-registry.key \
+  -e REGISTRY_AUTH=htpasswd \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e "REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd" \
+  registry
+
+  
+

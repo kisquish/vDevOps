@@ -1,0 +1,11 @@
+---
+# vars file for roles/containerizedJenkins
+
+centRemoteUser: ptcadm
+remoteJenkinsDirectory: "/home/{{centRemoteUser}}/jenkins_home"
+
+cicdIntPort1: 8080
+cicdExtPort1: 8103
+
+cicdIntPort2: 50000
+cicdExtPort2: 50000

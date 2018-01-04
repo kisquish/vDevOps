@@ -1,0 +1,59 @@
+[centos-dock]
+dockm01 ansible_host=192.168.122.11
+dockm02 ansible_host=192.168.122.12
+dockm03 ansible_host=192.168.122.13
+dockn01 ansible_host=192.168.122.3
+dockn02 ansible_host=192.168.122.4
+dockn03 ansible_host=192.168.122.5
+
+[centos-dockm1]
+dockm01 ansible_host=192.168.122.11
+
+[centos-dockm]
+dockm02 ansible_host=192.168.122.12
+dockm03 ansible_host=192.168.122.13
+
+[centos-dockn]
+dockn01 ansible_host=192.168.122.3
+dockn02 ansible_host=192.168.122.4
+dockn03 ansible_host=192.168.122.5
+
+[centos-cicd]
+dockn01 ansible_host=192.168.122.3
+
+[docker-registry]
+dockn02 ansible_host=192.168.122.4
+
+#[centos-masters]
+#
+#
+#[ubuntu]
+#
+#
+#[ubuntu-masters]
+#
+#
+#[masters:children]
+#centos-masters
+#ubuntu-masters
+#
+#[nodes:children]
+#ubuntu
+#centos
+
+#[cent-nodes:vars]
+#ansible_user={{centRemoteUser}}
+#ansible_ssh_user={{centRemoteUser}}
+#become_method=sudo
+#ansible_become=True
+
+#[ubun-nodes:vars]
+#ansible_user={{ubunRemoteUser}}
+#ansible_ssh_user={{ubunRemoteUser}}
+#become_method=sudo
+#ansible_become=True
+
+
+#ansible_become=true 
+#ansible_user= 
+#ansible_sudo_pass=

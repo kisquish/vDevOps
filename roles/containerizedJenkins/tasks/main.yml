@@ -1,0 +1,11 @@
+---
+# tasks file for roles/containerizedJenkins
+
+- name: create local directory for backing up jenkins container 
+  file:
+    path: "{{ remoteJenkinsDirectory }}"
+    state: directory
+    mode: 0755
+
+- name: create containerizedJenkins 
+  command: docker run -dti --name myCiCd -p {{ cicdExtPort1 }}:{{ cicdIntPort1 }} -p {{ cicdExtPort2 }}:{{ cicdIntPort2 }} -v {{remoteJenkinsDirectory}}:/var/jenkins_home jenkins

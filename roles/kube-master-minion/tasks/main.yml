@@ -1,0 +1,19 @@
+---
+# tasks file for roles/kube-master-minion
+
+- name: create virt7-docker-common-release repos
+  yum_repository:
+    name: virt7-docker-common-release
+    file: virt7-docker-common-release
+    baseurl: http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
+    gpgcheck: no
+    enabled: yes
+  # template:
+  #   src: virt7-docker-common-release.j2
+  #   dest: /etc/yum.repos.d/virt7-docker-common-release.repo
+
+- name: installing kubernetes | etcd | flannel
+  yum:
+    name: "{{ item }}"
+    state: present
+    

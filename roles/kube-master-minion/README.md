@@ -1,12 +1,14 @@
-Role Name
-=========
+kube-master-minion
+==================
 
-A brief description of the role goes here.
+This ansible role is used to create a cluster of kubernetes from scratch. It will will install kubernetes on your on-premise servers (VMs, baremetal, etc). We are using VMs in this demo
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- the playbook is tested on VMs based on CentOS 7
+- it uses at least 1 VM master known as kube-master
+- it uses at least 1 VM node known as kube-minion-1
 
 Role Variables
 --------------

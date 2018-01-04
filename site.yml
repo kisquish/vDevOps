@@ -1,0 +1,15 @@
+- hosts: centos-dock
+  user: ptcadm
+  roles:
+    - ansible-docker-install-linux
+
+# - hosts: centos-ci
+#   user: ptcadm
+#   roles:
+#     - installOnCentOS
+#     - containerizedJenkins
+    
+# - hosts: ubuntu
+#   roles:
+#     - installOnUbuntu
+

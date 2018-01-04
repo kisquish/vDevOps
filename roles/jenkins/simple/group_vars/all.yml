@@ -1,17 +1,21 @@
 ## vars on ansible host
-ansibleHostUser: ec2-user
+#ansibleHostUser: ec2-user
+ansibleHostUser: kisquish
 playbookName: jenkins
 # the following path includes the playbook name
-pathToPlaybbok: "/home/{{ansibleHostUser}}/workbench/vDevOps/{{playbookName}}/"
+#pathToPlaybbok: "/home/{{ansibleHostUser}}/workbench/vDevOps/{{playbookName}}/"
+pathToPlaybbok: "/home/{{ansibleHostUser}}/vDevOps/{{playbookName}}/"
 pathToScripts: "{{pathToPlaybbok}}scripts/"
-pathToKey: /home/ec2-user/.ssh/a-scap.pem
+#pathToKey: /home/ec2-user/.ssh/a-scap.pem
+pathToKey: /home/kisquish/.ssh/id_rsa
 ##
 
 ## vars on remote hosts
 # common
 dockerUserGroup: docker
 # on CentOS
-centRemoteUser: centos
+#centRemoteUser: centos
+centRemoteUser: kisquish
 # on Ubuntu
 ubunRemoteUser: ubuntu
 ##
