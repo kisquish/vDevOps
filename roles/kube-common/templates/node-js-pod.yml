@@ -4,7 +4,7 @@ metadata:
   name: node-js-pod
 spec:
   containers:
-  - name: node-js-pod
+    - name: node-js-pod
     image: bitnami/apache:latest
     ports:
-    - containerPort: 80
+      - containerPort: 80
